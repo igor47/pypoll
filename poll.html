@@ -1,0 +1,95 @@
+<html>
+	<head>
+		<title>bdsm poll</title>
+		<script type="text/javascript" src="/prototype.js"></script>
+		<script type="text/javascript">
+			function search() {
+				new Ajax.Request('index.py', {
+					method: 'post',
+					parameters: {'action':'search','author':$F('author'), 'title':$F('title')},
+					onSuccess: function(transport) { 
+						var results = transport.responseText.evalJSON();
+
+						if( results.length == 0 ) {
+							$('matchbox').hide();
+							$('matches').update('no simular titles');
+						} else {
+							var rows = "";
+							results.each( function(row) {
+									rows += "<a onClick='updateValues(\"" + row.title + "\",\"" + row.author + "\")'>";
+									rows += row.title + " by " + row.author;
+									rows += "</a></br>";
+									} )
+
+							$('matchbox').show();
+							$('matches').update(rows);
+						}
+					}
+				});
+			}
+			
+			function updateValues(title,author) {
+				$('author').value = author;
+				$('title').value = title;
+			}
+			
+			Event.observe(window, 'load', function() {
+					Event.observe('author','keyup', search);
+					Event.observe('title', 'keyup', search);
+					});
+		</script>
+		<style type="text/css">
+			label { display: block; float: left; 
+				width: 6em; text-align: right; margin-right: 0.5em;
+			}
+
+			.submit input { margin-left: 8em; }
+			input textarea {border: 1px solid #781351;}
+
+			legend { color:#fff; background:#ffa20c; 
+				border: 1px solid #781351; padding: 2px 6px; }
+
+			fieldset { background: #FFFF99; 
+				margin: 1em 20px 0; padding: 2em 10px 1em;
+				border: 1px solid #781351; font-size: 12pt;
+			}
+
+			fieldset#matchbox{ width: 15em; float: right; margin: 0; }
+
+			div#matches a {cursor: pointer; color: green;}
+		</style>
+	</head>
+	<body>
+		<fieldset style="margin-top: 3em">
+			<legend>What is your favorite BDSM fiction book?</legend>
+
+			<fieldset id="matchbox" style="display: none;"> <legend>Simular Votes<br><span style="font-size: 8pt;">(click to use)</span></legend> <div id="matches">nothing here</div> </div></fieldset>
+			<form method="POST" action="/index.py">
+				<input type="hidden" name="action" value="add">
+				<p><label for="title">Title:</label>
+				<input type="text" name="title" id="title"/></p>
+
+				<p><label for="author">Author:</label>
+				<Input type="text" name="author" id="author"/></p>
+
+				<p><label for="comments">Comments:</label>
+				<textarea name="comments" rows=3 cols=60></textarea>
+				</p>
+
+				<p class="submit">
+				<input type="submit" value="Submit (the form)" />
+				</p>
+			</form>
+		</fieldset>
+		<fieldset>
+			This poll will close on June 1, 2009 at 12AM.  It is being conducted by
+			<a href="http://clarissethorn.wordpress.com/">Clarisse Thorn</a>
+			for the purposes of an upcoming exhibit at the 
+			<a href="http://www.leatherarchives.org">Leather Archives & Museum</a>.
+			All submitted comments become property of the Leather Archives &amp; Museum. 
+			Please don't vote more than once; you're on the honor system
+			here, make me proud!  If you have any questions or concerns, feel
+			free to contact Clarisse: clarisse dot thorn at gmail dot com.
+		</fieldset>
+	</body>
+</html>
