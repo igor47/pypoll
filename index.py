@@ -57,7 +57,7 @@ def main():
 
 	if 'action' not in form:
 		print "Content-type: text/html\n\n"
-		print open('poll.html').read()
+		print open('done.html').read()
 		return
 
 	con = getDB()

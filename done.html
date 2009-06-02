@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<title>bdsm poll - thanks!</title>
+		<script type="text/javascript" src="/prototype.js"></script>
+		<script type="text/javascript">
+			function getResults() {
+				new Ajax.Request('index.py?action=showresults', {
+					method: 'get',
+					onSuccess: function(transport) {
+						var rows = "\n";
+						transport.responseText.evalJSON().each(function(row) {
+							rows += "<tr><td>" + row.votes + "</td><td>" + row.author + "</td><td>" + row.title + "</td></tr>\n";
+							});
+						$('results').update(rows);
+						}
+						});
+			}
+			</script>
+
+		<style type="text/css">
+			div#thanksbox { background: #FFFF99; 
+				margin: 1em 20px 0; padding: 1em 10px 1em;
+				border: 1px solid #781351; font-size: 12pt;
+			}
+			div#thanksbox table { color:#fff; background:#ffa20c; 
+				border: 1px solid #781351; padding: 2px 6px; }
+		</style>
+	</head>
+	<body onLoad="getResults()">
+		<div id="thanksbox">
+			<h2>The poll is now closed. Thank you all for your votes! Here are the results:</h2>
+			<table>
+				<thead>
+					<tr><th>Votes</th> <th>Author</th> <th>Title</th></tr>
+				</thead>
+				<tbody id="results">
+				</tbody>
+			</table>
+			<hr>
+			This poll was conducted by
+			<a href="http://clarissethorn.wordpress.com/">Clarisse Thorn</a>
+			for the purposes of an upcoming exhibit at the 
+			<a href="http://www.leatherarchives.org">Leather Archives & Museum</a>.
+			If you have any questions or concerns, feel free to contact
+			Clarisse: clarisse dot thorn at gmail dot com.  
+		</div>
+	</body>
+</html>
